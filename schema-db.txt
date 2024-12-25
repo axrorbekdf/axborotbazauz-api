@@ -1,0 +1,55 @@
+user
+    id
+    name
+    phone
+    login
+    password
+
+subscription
+    id
+    name
+    price
+    period
+
+payment
+    id
+    name
+
+subscription_history
+    id
+    user_id
+    subscription_id
+    payment_id
+    start_date
+    end_date
+
+category
+    id
+    name
+    slug
+    count
+
+subject
+    id
+    name
+    slug
+    count
+    category_id
+
+
+file
+    id
+    title
+    slug
+    downloads
+    category_id
+    subject_id
+    size
+    type
+
+file_page
+    id
+    number
+    content
+    previewPath
+
