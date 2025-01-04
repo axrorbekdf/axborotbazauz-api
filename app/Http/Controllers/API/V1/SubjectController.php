@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API\V1;
 
 use App\DTO\SubjectDTO;
 use App\Http\Controllers\Controller;
+use App\Models\Subject;
 use App\Services\SubjectCRUDService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class SubjectController extends Controller
 {
@@ -42,7 +44,7 @@ class SubjectController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "name" => request()->name,
-            "slug" => request()->slug,
+            "slug" => createUniqueSlug(request()->name, Subject::class),
             "count" => request()->count,
             "category_id" => request()->category_id,
             "responsible_worker" => Auth::user()->name ?? "Not name",
@@ -60,7 +62,7 @@ class SubjectController extends Controller
         $data = $this->classDTO->fromRequest([
             "id" => $id,
             "name" => request()->name,
-            "slug" => request()->slug,
+            "slug" => createUniqueSlug(request()->name, Subject::class),
             "count" => request()->count,
             "category_id" => request()->category_id,
             "responsible_worker" => Auth::user()->name ?? "Not name",

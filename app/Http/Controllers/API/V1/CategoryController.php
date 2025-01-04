@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\DTO\CategoryDTO;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Services\CategoryCRUDService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +42,7 @@ class CategoryController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "name" => request()->name,
-            "slug" => request()->slug,
+            "slug" => createUniqueSlug(request()->name, Category::class),
             "count" => request()->count,
             "responsible_worker" => Auth::user()->name ?? "Not name",
         ]);
@@ -58,7 +59,7 @@ class CategoryController extends Controller
         $data = $this->classDTO->fromRequest([
             "id" => $id,
             "name" => request()->name,
-            "slug" => request()->slug,
+            "slug" => createUniqueSlug(request()->name, Category::class),
             "count" => request()->count,
             "responsible_worker" => Auth::user()->name ?? "Not name",
         ]);

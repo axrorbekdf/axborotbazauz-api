@@ -34,7 +34,7 @@ class CRUDService implements CRUDServiceInterface
         }else{
             $model = $model->get();
         }
-        
+    
         
         return successResponse($this->modelResourceClass::collection($model)
                 ->response()->getData(true));
