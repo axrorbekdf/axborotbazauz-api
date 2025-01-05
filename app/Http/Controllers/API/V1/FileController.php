@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\DTO\FileDTO;
 use App\Http\Controllers\Controller;
+use App\Models\File;
 use App\Services\FileCRUDService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +43,7 @@ class FileController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "title" => request()->title,
-            "slug" => request()->slug,
+            "slug" => createUniqueSlug(request()->name, File::class),
             "downloads" => request()->downloads,
             "category_id" => request()->category_id,
             "subject_id" => request()->subject_id,
@@ -63,7 +64,7 @@ class FileController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "title" => request()->title,
-            "slug" => request()->slug,
+            "slug" => createUniqueSlug(request()->name, File::class),
             "downloads" => request()->downloads,
             "category_id" => request()->category_id,
             "subject_id" => request()->subject_id,
