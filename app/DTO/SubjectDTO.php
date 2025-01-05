@@ -20,7 +20,7 @@ class SubjectDTO implements DTOInterface
     public function rules(): array
     {
         return [
-            "name" => $this->id ? "required|unique:subjects,name".$this->id : "required|unique:subjects,name",
+            "name" => $this->id ? "required|unique:subjects,name,".$this->id : "required|unique:subjects,name",
             "slug" => "required",
             "count" => "required",
             "category_id" => "required|int",

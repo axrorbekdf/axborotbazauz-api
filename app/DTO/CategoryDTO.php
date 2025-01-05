@@ -19,7 +19,7 @@ class CategoryDTO implements DTOInterface
     public function rules(): array
     {
         return [
-            "name" => $this->id ? "required|unique:categories,name".$this->id : "required|unique:categories,name",
+            "name" => $this->id ? "required|unique:categories,name,".$this->id : "required|unique:categories,name",
             "slug" => "required",
             "count" => "required|int",
             "responsible_worker" => "required"

@@ -19,7 +19,7 @@ class SubscriptionDTO implements DTOInterface
     public function rules(): array
     {
         return [
-            "name" => $this->id ? "required|unique:subscriptions,name".$this->id : "required|unique:subscriptions,name",
+            "name" => $this->id ? "required|unique:subscriptions,name,".$this->id : "required|unique:subscriptions,name",
             "price" => "required|int",
             "period" => "required|array",
             "responsible_worker" => "required"

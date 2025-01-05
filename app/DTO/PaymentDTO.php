@@ -17,7 +17,7 @@ class PaymentDTO implements DTOInterface
     public function rules(): array
     {
         return [
-            "name" => $this->id ? "required|unique:payments,name".$this->id : "required|unique:payments,name",
+            "name" => $this->id ? "required|unique:payments,name,".$this->id : "required|unique:payments,name",
             "responsible_worker" => "required"
         ];
     }
