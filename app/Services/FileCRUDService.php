@@ -9,5 +9,5 @@ class FileCRUDService extends CRUDService
 {
     protected $modelClass = File::class;
     protected $modelResourceClass = FileResource::class;
-    protected $withModels = ['category','subjects','files'];
+    protected $withModels = ['category','subject'];
 }

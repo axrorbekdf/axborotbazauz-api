@@ -43,7 +43,7 @@ class FileController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "title" => request()->title,
-            "slug" => createUniqueSlug(request()->name, File::class),
+            "slug" => createUniqueSlug(request()->title, File::class),
             "downloads" => request()->downloads,
             "category_id" => request()->category_id,
             "subject_id" => request()->subject_id,
@@ -64,7 +64,7 @@ class FileController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "title" => request()->title,
-            "slug" => createUniqueSlug(request()->name, File::class),
+            "slug" => createUniqueSlug(request()->title, File::class),
             "downloads" => request()->downloads,
             "category_id" => request()->category_id,
             "subject_id" => request()->subject_id,
