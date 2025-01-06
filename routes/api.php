@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\FileController;
+use App\Http\Controllers\API\V1\FileUploadController;
 use App\Http\Controllers\API\V1\PaymentController;
 use App\Http\Controllers\API\V1\SubjectController;
 use App\Http\Controllers\API\V1\SubscriptionController;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('v1/auth/login', [AuthController::class, 'loginWithLogin']);
 Route::post('v2/auth/login', [AuthController::class, 'loginWithPhone']);
 Route::post('v3/auth/login', [AuthController::class, 'loginWithEmail']);
+Route::post('file', [FileUploadController::class, 'readPdfPages']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)

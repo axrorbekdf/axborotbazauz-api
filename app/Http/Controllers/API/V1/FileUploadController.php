@@ -9,7 +9,7 @@ use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class FilePageController extends Controller
+class FileUploadController extends Controller
 {
     public function readPdfPages(Request $request)
     {
@@ -31,10 +31,6 @@ class FilePageController extends Controller
         
         $fayl_upload_tima = time();
         $fileName = $fayl_upload_tima . '-' . Str::slug($basename).'.'.$extension;
-        
-        // if (Storage::disk('public')->exists("uploads/".$fileName)) {
-        //     return "Fayl mavjud!";
-        // }
 
         $filePath = $file->storeAs('uploads/'.$fayl_upload_tima,$fileName, 'public');
 
@@ -63,17 +59,22 @@ class FilePageController extends Controller
 
                 // Matn rangini belgilash (Oq rang)
                 $textColor = imagecolorallocate($image, 0, 0, 0);
+                $lightBlack = imagecolorallocate($image, 185, 185, 185); // Ochiq qora (kul rang)
+
+
+                // Shrift yo‘li
+                $fontPath = public_path('fonts/arial.ttf'); // TTF shrift fayli
 
                 // Matnni rasmga qo‘shish
-                $text = "AXBOROT BAZA UZ";
+                $text = "AXBOROTBAZA.UZ";
 
                 // Rasm o‘lchamini olish
                 $imageWidth = imagesx($image);
                 $imageHeight = imagesy($image);
 
                 // Matn o‘lchamini belgilash
-                $fontSize = 20; // Shrift hajmi
-                $angle = 45; // Matn burchagi
+                $fontSize = 120; // Shrift hajmi
+                $angle = 55; // Matn burchagi
 
                 // Matn o‘lchamini hisoblash
                 $textBox = imagettfbbox($fontSize, $angle, $fontPath, $text);
@@ -85,7 +86,7 @@ class FilePageController extends Controller
                 $y = ($imageHeight + $textHeight) / 2;
 
                 // Matnni rasmga qo‘shish
-                imagettftext($image, $fontSize, $angle, $x, $y, $textColor, $fontPath, $text);
+                imagettftext($image, $fontSize, $angle, $x, $y, $lightBlack, $fontPath, $text);
 
                 // Rasmni saqlash
                 imagejpeg($image, $outputPath);
@@ -94,7 +95,6 @@ class FilePageController extends Controller
                 // Rasmni tozalash
                 imagedestroy($image);
 
-                // echo "Pechat qo‘shilgan rasm: " . $outputPath;
             }
         }
         
