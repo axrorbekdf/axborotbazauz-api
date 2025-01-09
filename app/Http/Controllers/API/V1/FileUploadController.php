@@ -8,15 +8,19 @@ use Smalot\PdfParser\Parser;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpPresentation\IOFactory as PresentationIOFactory;
+
 
 class FileUploadController extends Controller
 {
-    public function readPdfPages(Request $request)
+    public function readPdfAndReadWordPages(Request $request)
     {
         // Validayatsiya
 
         $validate = validate($request->all(), [
-            'file' => 'required|mimes:pdf|max:20480', // Faqat PDF fayllar uchun
+            'file' => 'required|mimes:pdf,docx,doc,pptx,ppt|max:20480', // Faqat PDF fayllar uchun
         ]);
     
         if ($validate !== true) return $validate;
@@ -34,10 +38,74 @@ class FileUploadController extends Controller
 
         $filePath = $file->storeAs('uploads/'.$fayl_upload_tima,$fileName, 'public');
 
+        if (strtolower($file->getClientOriginalExtension()) === "pptx") {
+            // PPTX faylni o‘qish
+            $pptFileFullPath = storage_path('app/public/' . $filePath);
+            $presentation = PresentationIOFactory::load($pptFileFullPath);
+
+            // Word faylni yaratish
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection();
+
+            // Slaydlarni o‘qish va Wordga yozish
+            foreach ($presentation->getAllSlides() as $slideIndex => $slide) {
+                $section->addText("Slayd #" . ($slideIndex + 1), ['bold' => true, 'size' => 16]);
+
+                foreach ($slide->getShapeCollection() as $shape) {
+                    if ($shape instanceof \PhpOffice\PhpPresentation\Shape\RichText) {
+                        foreach ($shape->getParagraphs() as $paragraph) {
+                            $section->addText($paragraph->getPlainText(), ['size' => 12]);
+                        }
+                    }
+                }
+
+                $section->addTextBreak(2); // Slaydlar orasida bo‘sh joy
+            }
+
+            // Word faylni saqlash
+            $wordFilePath = storage_path('app/public/uploads/'.$fayl_upload_tima.'/'. $fayl_upload_tima . '-'.Str::slug($basename).'.docx');
+            $wordWriter = IOFactory::createWriter($phpWord, 'Word2007');
+            $wordWriter->save($wordFilePath);
+            
+            $filePath = "uploads/".$fayl_upload_tima."/".basename($wordFilePath);
+
+        }
+        
+
+        
+
+        // if (strtolower($file->getClientOriginalExtension()) === "docx") {
+        if (file_exists(storage_path("app/public/".$filePath)) && strtolower($file->getClientOriginalExtension()) !== "pdf") {
+
+            $docxFilePath = storage_path('app/public/'.$filePath);
+            $fileName = $fayl_upload_tima . '-' . Str::slug($basename).'.pdf';
+            $pdfFilePath = storage_path('app/public/uploads/'.$fayl_upload_tima.'/'.$fileName);
+
+            $phpWord = IOFactory::load($docxFilePath, 'Word2007');
+
+            // PDF formatida saqlash
+            $domPdfPath = \PhpOffice\PhpWord\Settings::setPdfRendererPath(base_path('vendor/dompdf/dompdf'));
+            \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF');
+
+            $writer = IOFactory::createWriter($phpWord, 'PDF');
+            $writer->save($pdfFilePath);
+
+            
+            if (!file_exists($pdfFilePath)) {
+                return response()->json(['message' => 'DOCX faylni PDFga aylantirib bo‘lmadi.'], 500);
+            }
+
+            // Fayl yo‘lini ajratish
+            $info = pathinfo($filePath);
+
+            // Yangi kengaytma bilan fayl yo‘li
+            $filePath = $info['dirname'] . '/' . $info['filename'] . '.pdf';
+        }
 
         // Faqat PDF fayllar uchun rasmga aylantirish
         $pageToImages = [];
-        if ($file->getClientOriginalExtension() === $extension) {
+
+        if (file_exists(storage_path("app/public/".$filePath))) {
             $pdf = new Pdf(Storage::disk('public')->path($filePath));
 
             // Har bir sahifani aylantirish
@@ -113,10 +181,15 @@ class FileUploadController extends Controller
             ]; // Sahifani o‘qish va raqam bilan bog‘lash
         }
 
-        return response()->json([
+        return successResponse([
             'message' => 'PDF sahifalari muvaffaqiyatli o‘qildi!',
+            'filePath' => $filePath, //http://127.0.0.1:8000/storage/
+            'size' => round(Storage::size("public/".$filePath) / (1024 * 1024), 2)."MB",
+            'type' => $extension,
             'pages' => $allPages, // Har bir sahifani alohida ko‘rsatish
-            // 'rasmlar' => $extractedTexts
         ]);
     }
+
+
+
 }

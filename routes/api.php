@@ -26,7 +26,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('v1/auth/login', [AuthController::class, 'loginWithLogin']);
 Route::post('v2/auth/login', [AuthController::class, 'loginWithPhone']);
 Route::post('v3/auth/login', [AuthController::class, 'loginWithEmail']);
-Route::post('file', [FileUploadController::class, 'readPdfPages']);
+Route::post('file', [FileUploadController::class, 'readPdfAndReadWordPages']);
+Route::post('file/pptx', [FileUploadController::class, 'readPptText']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)
