@@ -39,43 +39,74 @@ class FileUploadController extends Controller
         $filePath = $file->storeAs('uploads/'.$fayl_upload_tima,$fileName, 'public');
 
         if (strtolower($file->getClientOriginalExtension()) === "pptx") {
-            // PPTX faylni o‘qish
-            $pptFileFullPath = storage_path('app/public/' . $filePath);
-            $presentation = PresentationIOFactory::load($pptFileFullPath);
 
-            // Word faylni yaratish
-            $phpWord = new PhpWord();
-            $section = $phpWord->addSection();
-
-            // Slaydlarni o‘qish va Wordga yozish
-            foreach ($presentation->getAllSlides() as $slideIndex => $slide) {
-                $section->addText("Slayd #" . ($slideIndex + 1), ['bold' => true, 'size' => 16]);
-
-                foreach ($slide->getShapeCollection() as $shape) {
-                    if ($shape instanceof \PhpOffice\PhpPresentation\Shape\RichText) {
-                        foreach ($shape->getParagraphs() as $paragraph) {
-                            $section->addText($paragraph->getPlainText(), ['size' => 12]);
-                        }
-                    }
-                }
-
-                $section->addTextBreak(2); // Slaydlar orasida bo‘sh joy
-            }
-
-            // Word faylni saqlash
-            $wordFilePath = storage_path('app/public/uploads/'.$fayl_upload_tima.'/'. $fayl_upload_tima . '-'.Str::slug($basename).'.docx');
-            $wordWriter = IOFactory::createWriter($phpWord, 'Word2007');
-            $wordWriter->save($wordFilePath);
+            $scriptPath = app_path('app/scripts/script.py');
             
-            $filePath = "uploads/".$fayl_upload_tima."/".basename($wordFilePath);
+            // Argumentlarni yuborish
+            $arg1 = escapeshellarg($request->input('arg1', storage_path("app/public/".$filePath))); // Birinchi argument
+            // $arg2 = escapeshellarg($request->input('arg2', 'default2')); // Ikkinchi argument
 
+            // Python skriptni ishga tushirish
+            $output = shell_exec("python $scriptPath $arg1 2>&1");
+            // // PPTX faylni o‘qish
+            // $pptFileFullPath = storage_path('app/public/' . $filePath);
+            // $presentation = PresentationIOFactory::load($pptFileFullPath);
+
+            // // Word faylni yaratish
+            // $phpWord = new PhpWord();
+            // $section = $phpWord->addSection([
+            //     'orientation' => 'landscape'
+            // ]);
+
+            // // Slaydlarni o‘qish va Wordga yozish
+            // foreach ($presentation->getAllSlides() as $slideIndex => $slide) {
+            //     $section->addText("Slayd #" . ($slideIndex + 1), ['bold' => true, 'size' => 16]);
+
+            //     foreach ($slide->getShapeCollection() as $shape) {
+            //         if ($shape instanceof \PhpOffice\PhpPresentation\Shape\RichText) {
+            //             foreach ($shape->getParagraphs() as $paragraph) {
+            //                 $section->addText($paragraph->getPlainText(), ['size' => 12]);
+            //             }
+            //         }
+
+            //         // Agar rasm bo'lsa, uni Wordga qo'shish
+            //         if ($shape instanceof \PhpOffice\PhpPresentation\Shape\Media) {
+            //             // Rasmni olish
+            //             $imagePath = $shape->getPath();
+
+            //             // Word hujjatiga rasm qo'shish
+            //             if (file_exists($imagePath)) {
+            //                 $section->addImage($imagePath, [
+            //                     'width' => $shape->getWidth(),  // Rasmning kengligi
+            //                     'height' => $shape->getHeight(), // Rasmning balandligi
+            //                     'wrappingStyle' => 'inline',    // Rasmni joylashuvi
+            //                 ]);
+            //             }
+            //         }
+            //     }
+
+            //     $section->addPageBreak(); // Yangi sahifaga o'tkazib ketadi har bir slideni
+
+            //     // $section->addTextBreak(2); // Slaydlar orasida bo‘sh joy
+            // }
+
+            // // Word faylni saqlash
+            // $wordFilePath = storage_path('app/public/uploads/'.$fayl_upload_tima.'/'. $fayl_upload_tima . '-'.Str::slug($basename).'.docx');
+            // $wordWriter = IOFactory::createWriter($phpWord, 'Word2007');
+            // $wordWriter->save($wordFilePath);
+            
+            // Fayl yo‘lini ajratish
+            $info = pathinfo($filePath);
+
+            // Yangi kengaytma bilan fayl yo‘li
+            $filePath = $info['dirname'] . '/' . $info['filename'] . '.pdf';
         }
         
 
         
 
         // if (strtolower($file->getClientOriginalExtension()) === "docx") {
-        if (file_exists(storage_path("app/public/".$filePath)) && strtolower($file->getClientOriginalExtension()) !== "pdf") {
+        if (file_exists(storage_path("app/public/".$filePath)) && strtolower($file->getClientOriginalExtension()) === "docx") {
 
             $docxFilePath = storage_path('app/public/'.$filePath);
             $fileName = $fayl_upload_tima . '-' . Str::slug($basename).'.pdf';
