@@ -9,5 +9,5 @@ class CategoryCRUDService extends CRUDService
 {
     protected $modelClass = Category::class;
     protected $modelResourceClass = CategoryResource::class;
-    protected $withModels = ['subjects', 'files'];
+    protected $withModels = ['subjects', 'materials'];
 }

@@ -29,7 +29,7 @@ class Category extends Model
         return $this->hasMany(Subject::class);
     }
 
-    public function files(){
-        return $this->hasMany(File::class);
+    public function material(){
+        return $this->hasMany(Material::class);
     }
 }

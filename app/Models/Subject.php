@@ -30,7 +30,7 @@ class Subject extends Model
         return $this->belongsTo(Category::class);
     }
     
-    public function files(){
-        return $this->hasMany(File::class);
+    public function material(){
+        return $this->hasMany(Material::class);
     }
 }

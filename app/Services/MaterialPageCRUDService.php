@@ -9,5 +9,5 @@ class MaterialPageCRUDService extends CRUDService
 {
     protected $modelClass = MaterialPage::class;
     protected $modelResourceClass = MaterialPageResource::class;
-    protected $withModels = ['files'];
+    protected $withModels = ['material'];
 }
