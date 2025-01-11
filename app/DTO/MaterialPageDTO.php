@@ -5,11 +5,11 @@ namespace App\DTO;
 use App\Interfaces\DTOInterface;
 use App\Traits\BaseDTO;
 
-class FilePageDTO implements DTOInterface
+class MaterialPageDTO implements DTOInterface
 {
     use BaseDTO;
 
-    public $file_id;
+    public $material_id;
     public $number;
     public $content;
     public $previewPath;
@@ -19,7 +19,7 @@ class FilePageDTO implements DTOInterface
     public function rules(): array
     {
         return [
-            "file_id" => "required",
+            "material_id" => "required",
             "number" => "required",
             "content" => "required",
             "previewPath" => "required",

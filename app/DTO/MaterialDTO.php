@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Interfaces\DTOInterface;
 use App\Traits\BaseDTO;
 
-class FileDTO implements DTOInterface
+class MaterialDTO implements DTOInterface
 {
     use BaseDTO;
 

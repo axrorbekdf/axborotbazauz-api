@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\DTO\FileDTO;
+use App\DTO\MaterialDTO;
 use App\Http\Controllers\Controller;
-use App\Models\File;
-use App\Services\FileCRUDService;
+use App\Models\Material;
+use App\Services\MaterialCRUDService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class FileController extends Controller
+class MaterialController extends Controller
 {
     protected $serviceClass;
     protected $classDTO;
 
     public function __construct()
     {
-        $this->serviceClass = new FileCRUDService();
-        $this->classDTO = new FileDTO();
+        $this->serviceClass = new MaterialCRUDService();
+        $this->classDTO = new MaterialDTO();
     }
 
     public function index(){
@@ -43,7 +43,7 @@ class FileController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "title" => request()->title,
-            "slug" => createUniqueSlug(request()->title, File::class),
+            "slug" => createUniqueSlug(request()->title, Material::class),
             "downloads" => request()->downloads,
             "category_id" => request()->category_id,
             "subject_id" => request()->subject_id,
@@ -64,7 +64,7 @@ class FileController extends Controller
 
         $data = $this->classDTO->fromRequest([
             "title" => request()->title,
-            "slug" => createUniqueSlug(request()->title, File::class),
+            "slug" => createUniqueSlug(request()->title, Material::class),
             "downloads" => request()->downloads,
             "category_id" => request()->category_id,
             "subject_id" => request()->subject_id,
@@ -84,5 +84,23 @@ class FileController extends Controller
     public function destroy(string $id){
 
         return $this->serviceClass->destroy($id);
+    }
+
+
+    public function readPdfAndReadWordPages(Request $request){
+
+        // Validayatsiya
+
+        $validate = validate($request->all(), [
+            'file' => 'required|mimes:pdf,docx,doc,pptx,ppt|max:20480', // Faqat PDF,PPT,DOC fayllar uchun
+        ]);
+    
+        if ($validate !== true) return $validate;
+        
+        // Faylni yuklash
+        $file = $request->file('file');
+
+        return $this->serviceClass->readPdfAndReadWordPages($file);
+       
     }
 }

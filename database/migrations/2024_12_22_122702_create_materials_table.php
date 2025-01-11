@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->nullable();
-            $table->string('downloads')->nullable();
+            $table->string('downloads')->nullable()->default(0);
             $table->foreignId('category_id')->nullable();
             $table->foreignId('subject_id')->nullable();
             $table->string('path')->nullable();
             $table->string('size')->nullable();
             $table->string('type')->nullable();
+            $table->string('status')->nullable()->default('passive'); // active, passive
             $table->string('responsible_worker')->nullable();
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('materials');
     }
 };

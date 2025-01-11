@@ -3,10 +3,9 @@
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\V1\CategoryController;
-use App\Http\Controllers\API\V1\FileController;
 use App\Http\Controllers\API\V1\FileUploadController;
+use App\Http\Controllers\API\V1\MaterialController;
 use App\Http\Controllers\API\V1\PaymentController;
-use App\Http\Controllers\API\V1\PythonController;
 use App\Http\Controllers\API\V1\SubjectController;
 use App\Http\Controllers\API\V1\SubscriptionController;
 use App\Http\Controllers\API\V1\SubscriptionHistoryController;
@@ -27,8 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('v1/auth/login', [AuthController::class, 'loginWithLogin']);
 Route::post('v2/auth/login', [AuthController::class, 'loginWithPhone']);
 Route::post('v3/auth/login', [AuthController::class, 'loginWithEmail']);
-Route::post('file', [FileUploadController::class, 'readPdfAndReadWordPages']);
-Route::post('file/pptx', [PythonController::class, 'runPythonScript']);
+Route::post('file', [MaterialController::class, 'readPdfAndReadWordPages']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)
@@ -103,13 +101,14 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::delete('/history/subscription/delete/{id}', 'destroy');
             });
         
-        Route::controller(FileController::class)
+        Route::controller(MaterialController::class)
             // ->middleware('basicAuth')
             ->group(function () {
                 Route::get('/file/index', 'index');
                 Route::get('/file/for/options', 'forOptions');
                 Route::get('/file/view/{id}', 'view');
                 Route::post('/file/store', 'store');
+                Route::post('/file/uploaded', 'readPdfAndReadWordPages');
                 Route::put('/file/update/{id}', 'update');
                 Route::delete('/file/delete/{id}', 'destroy');
             });

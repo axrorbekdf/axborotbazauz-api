@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('file_pages', function (Blueprint $table) {
+        Schema::create('material_pages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('file_id')->nullable();
+            $table->foreignId('material_id')->nullable();
             $table->string('number')->nullable();
-            $table->string('content')->nullable();
+            $table->longText('content')->nullable();
             $table->string('previewPath')->nullable();
             $table->string('responsible_worker')->nullable();
             $table->timestamps();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('file_pages');
+        Schema::dropIfExists('material_pages');
     }
 };

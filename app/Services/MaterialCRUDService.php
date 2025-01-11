@@ -1,32 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Services;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\MaterialResource;
+use App\Models\Material;
+use App\Models\MaterialPage;
+use Illuminate\Support\Facades\Auth;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\IOFactory;
 
-
-class FileUploadController extends Controller
+class MaterialCRUDService extends CRUDService
 {
-    public function readPdfAndReadWordPages(Request $request)
+    protected $modelClass = Material::class;
+    protected $relationModelClass = MaterialPage::class;
+    protected $modelResourceClass = MaterialResource::class;
+    protected $withModels = ['category','subject', 'pages'];
+
+
+    public function readPdfAndReadWordPages($file)
     {
-        // Validayatsiya
-
-        $validate = validate($request->all(), [
-            'file' => 'required|mimes:pdf,docx,doc,pptx,ppt|max:20480', // Faqat PDF fayllar uchun
-        ]);
-    
-        if ($validate !== true) return $validate;
-
-        
-        // Faylni yuklash
-        $file = $request->file('file');
         // Fayl nomini va kengaytmasini ajratib olish
         $fileInfo = pathinfo($file->getClientOriginalName());
         $basename = $fileInfo['filename']; // Fayl nomi (kengaytmasiz)
@@ -42,7 +36,7 @@ class FileUploadController extends Controller
             $scriptPath = app_path('python/scripts/pptToPdf.py');
             
             // Argumentlarni yuborish
-            $arg1 = escapeshellarg($request->input('arg1', storage_path("app/public/".$filePath))); // Birinchi argument
+            $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
             // $arg2 = escapeshellarg($request->input('arg2', 'default2')); // Ikkinchi argument
 
             // Python skriptni ishga tushirish
@@ -59,23 +53,14 @@ class FileUploadController extends Controller
         // if (strtolower($file->getClientOriginalExtension()) === "docx") {
         if (file_exists(storage_path("app/public/".$filePath)) && strtolower($file->getClientOriginalExtension()) === "docx") {
 
-            $docxFilePath = storage_path('app/public/'.$filePath);
-            $fileName = $fayl_upload_tima . '-' . Str::slug($basename).'.pdf';
-            $pdfFilePath = storage_path('app/public/uploads/'.$fayl_upload_tima.'/'.$fileName);
-
-            $phpWord = IOFactory::load($docxFilePath, 'Word2007');
-
-            // PDF formatida saqlash
-            $domPdfPath = \PhpOffice\PhpWord\Settings::setPdfRendererPath(base_path('vendor/dompdf/dompdf'));
-            \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF');
-
-            $writer = IOFactory::createWriter($phpWord, 'PDF');
-            $writer->save($pdfFilePath);
-
+            $scriptPath = app_path('python/scripts/docToPdf.py');
             
-            if (!file_exists($pdfFilePath)) {
-                return response()->json(['message' => 'DOCX faylni PDFga aylantirib bo‘lmadi.'], 500);
-            }
+            // Argumentlarni yuborish
+            $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
+            // $arg2 = escapeshellarg($request->input('arg2', 'default2')); // Ikkinchi argument
+
+            // Python skriptni ishga tushirish
+            $output = shell_exec("python $scriptPath $arg1 2>&1");
 
             // Fayl yo‘lini ajratish
             $info = pathinfo($filePath);
@@ -164,9 +149,20 @@ class FileUploadController extends Controller
             $allPages[] = [
                 "content" => $page->getText(),
                 "number" => $pageNumber+1,
-                "path" => $pageToImages[$pageNumber]
+                "previewPath" => $pageToImages[$pageNumber]
             ]; // Sahifani o‘qish va raqam bilan bog‘lash
         }
+
+        $model = $this->modelClass::create([
+            "title" => $basename,
+            "slug" => Str::slug($basename),
+            "path" => $filePath,
+            "size" => round(Storage::size("public/".$filePath) / (1024 * 1024), 2)."MB",
+            "type" => $extension,
+            "responsible_worker" => Auth::user()->name ?? "Not name",
+        ]);
+
+        $file = $model->pages()->createMany($allPages);
 
         return successResponse([
             'message' => 'PDF sahifalari muvaffaqiyatli o‘qildi!',
@@ -176,7 +172,4 @@ class FileUploadController extends Controller
             'pages' => $allPages, // Har bir sahifani alohida ko‘rsatish
         ]);
     }
-
-
-
 }

@@ -7,12 +7,12 @@ use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FilePage extends Model
+class MaterialPage extends Model
 {
     use HasFactory, Searchable, QueryFilter;
 
     protected $fillable = [
-        "file_id",
+        "material_id",
         "number",
         "content",
         "previewPath",
@@ -20,14 +20,14 @@ class FilePage extends Model
     ];
 
     protected $searchable = [
-        "file.name",
+        "material.name",
         "number",
         "content",
         "previewPath",
         "responsible_worker",
     ];
 
-    public function file(){
-        return $this->belongsTo(File::class);
+    public function material(){
+        return $this->belongsTo(Material::class);
     }
 }

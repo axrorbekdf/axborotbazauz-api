@@ -7,16 +7,16 @@ use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model
+class Material extends Model
 {
     use HasFactory, Searchable, QueryFilter;
 
     protected $fillable = [
         "title",
         "slug",
-        "downloads",
         "category_id",
         "subject_id",
+        "downloads",
         "path",
         "size",
         "type",
@@ -32,6 +32,7 @@ class File extends Model
         "size",
         "type",
         "responsible_worker",
+        "pages.content"
     ];
 
     public function category(){
@@ -43,6 +44,6 @@ class File extends Model
     }
 
     public function pages(){
-        return $this->hasMany(FilePage::class);
+        return $this->hasMany(MaterialPage::class);
     }
 }
