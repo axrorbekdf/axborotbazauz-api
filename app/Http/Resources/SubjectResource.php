@@ -14,6 +14,17 @@ class SubjectResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "slug" => $this->slug,
+            "count" => $this->count,
+            "category_id" => $this->category_id,
+            "responsible_worker" => $this->responsible_worker,
+            "created_at" => dateFormat($this->created_at),
+            "updated_at" => dateFormat($this->updated_at),
+            "category" => CategoryForRelationResource::make($this->category),
+            "materials" => MaterialForRelationResource::collection($this->materials),
+        ];
     }
 }

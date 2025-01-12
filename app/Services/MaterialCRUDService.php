@@ -19,7 +19,7 @@ class MaterialCRUDService extends CRUDService
     protected $withModels = ['category','subject', 'pages'];
 
 
-    public function readPdfAndReadWordPages($file)
+    public function readPdfAndReadWordPages($file, $request)
     {
         // Fayl nomini va kengaytmasini ajratib olish
         $fileInfo = pathinfo($file->getClientOriginalName());
@@ -154,7 +154,9 @@ class MaterialCRUDService extends CRUDService
         }
 
         $model = $this->modelClass::create([
-            "title" => $basename,
+            "title" => $request->title ?? $basename,
+            "category_id" => $request->category_id ?? null,
+            "subject_id" => $request->subject_id ?? null,
             "slug" => Str::slug($basename),
             "path" => $filePath,
             "size" => round(Storage::size("public/".$filePath) / (1024 * 1024), 2)."MB",

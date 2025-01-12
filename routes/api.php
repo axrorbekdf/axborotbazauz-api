@@ -104,13 +104,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::controller(MaterialController::class)
             // ->middleware('basicAuth')
             ->group(function () {
-                Route::get('/file/index', 'index');
-                Route::get('/file/for/options', 'forOptions');
-                Route::get('/file/view/{id}', 'view');
-                Route::post('/file/store', 'store');
-                Route::post('/file/uploaded', 'readPdfAndReadWordPages');
-                Route::put('/file/update/{id}', 'update');
-                Route::delete('/file/delete/{id}', 'destroy');
+                Route::get('/material/index', 'index');
+                Route::get('/material/for/options', 'forOptions');
+                Route::get('/material/view/{id}', 'view');
+                Route::post('/material/store', 'store');
+                Route::post('/material/uploaded', 'readPdfAndReadWordPages');
+                Route::put('/material/update/{id}', 'update');
+                Route::delete('/material/delete/{id}', 'destroy');
             });
     });
 

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubscriptionResource extends JsonResource
+class CategoryForRelationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +17,11 @@ class SubscriptionResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "price" => $this->price,
-            "period" => $this->period,
+            "slug" => $this->slug,
+            "count" => $this->count,
             "responsible_worker" => $this->responsible_worker,
             "created_at" => dateFormat($this->created_at),
-            "updated_at" => dateFormat($this->updated_at)
+            "updated_at" => dateFormat($this->updated_at),
         ];
     }
 }

@@ -92,15 +92,18 @@ class MaterialController extends Controller
         // Validayatsiya
 
         $validate = validate($request->all(), [
+            'title' => "required",
+            'category_id' => "required",
+            'subject_id' => "required",
             'file' => 'required|mimes:pdf,docx,doc,pptx,ppt|max:20480', // Faqat PDF,PPT,DOC fayllar uchun
         ]);
     
         if ($validate !== true) return $validate;
         
         // Faylni yuklash
-        $file = $request->file('file');
+        $file = request()->file('file');
 
-        return $this->serviceClass->readPdfAndReadWordPages($file);
+        return $this->serviceClass->readPdfAndReadWordPages($file, $request);
        
     }
 }
