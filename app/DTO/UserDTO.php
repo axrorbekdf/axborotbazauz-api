@@ -23,9 +23,9 @@ class UserDTO implements DTOInterface
     {
         return [
             "name" => "required",
-            "phone" => $this->phone ? "unique:users,phone" : "",
-            "email" => $this->email ? "unique:users,email" : "",
-            "login" => $this->login ? "unique:users,login" : "",
+            "phone" => $this->phone ? ($this->id ? "unique:users,phone,".$this->id: "unique:users,phone") : "",
+            "email" => $this->email ? ($this->id ? "unique:users,email,".$this->id: "unique:users,email") : "",
+            "login" => $this->login ? ($this->id ? "unique:users,login,".$this->id: "unique:users,login") : "",
             "password" => "required|min:6",
             "is_active" => "required|bool",
             "responsible_worker" => "required",
