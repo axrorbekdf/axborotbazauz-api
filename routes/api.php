@@ -9,6 +9,7 @@ use App\Http\Controllers\API\V1\PaymentController;
 use App\Http\Controllers\API\V1\SubjectController;
 use App\Http\Controllers\API\V1\SubscriptionController;
 use App\Http\Controllers\API\V1\SubscriptionHistoryController;
+use App\Http\Controllers\Home\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,15 @@ Route::post('v1/auth/login', [AuthController::class, 'loginWithLogin']);
 Route::post('v2/auth/login', [AuthController::class, 'loginWithPhone']);
 Route::post('v3/auth/login', [AuthController::class, 'loginWithEmail']);
 Route::post('file', [MaterialController::class, 'readPdfAndReadWordPages']);
+
+
+Route::controller(HomeController::class)
+    // ->middleware('basicAuth')
+    ->prefix('v1')
+    ->group(function () {
+        Route::get('/category', 'categories');
+        Route::get('/subject', 'subjects');
+    });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)
