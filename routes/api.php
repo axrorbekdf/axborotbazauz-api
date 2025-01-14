@@ -36,6 +36,7 @@ Route::controller(HomeController::class)
     ->group(function () {
         Route::get('/category', 'categories');
         Route::get('/subject', 'subjects');
+        Route::get('/material', 'materials');
     });
 
 Route::middleware('auth:sanctum')->group(function () {
