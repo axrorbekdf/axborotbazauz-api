@@ -46,7 +46,6 @@ class SubjectController extends Controller
             "name" => request()->name,
             "slug" => createUniqueSlug(request()->name, Subject::class),
             "count" => request()->count,
-            "category_id" => request()->category_id,
             "responsible_worker" => Auth::user()->name ?? "Not name",
         ]);
         
@@ -64,7 +63,6 @@ class SubjectController extends Controller
             "name" => request()->name,
             "slug" => createUniqueSlug(request()->name, Subject::class),
             "count" => request()->count,
-            "category_id" => request()->category_id,
             "responsible_worker" => Auth::user()->name ?? "Not name",
         ]);
         

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('slug')->nullable();
             $table->integer('count')->nullable();
-            $table->foreignId('category_id')->nullable();
             $table->string('responsible_worker')->nullable();
             $table->timestamps();
         });

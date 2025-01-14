@@ -15,7 +15,6 @@ class Subject extends Model
         "name",
         "slug",
         "count",
-        "category_id",
         "responsible_worker",
     ];
 
@@ -23,12 +22,7 @@ class Subject extends Model
         "name",
         "count",
         "responsible_worker",
-        "category.name"
     ];
-
-    public function category(){
-        return $this->belongsTo(Category::class);
-    }
     
     public function materials(){
         return $this->hasMany(Material::class);

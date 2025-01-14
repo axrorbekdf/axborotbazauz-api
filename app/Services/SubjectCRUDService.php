@@ -9,5 +9,5 @@ class SubjectCRUDService extends CRUDService
 {
     protected $modelClass = Subject::class;
     protected $modelResourceClass = SubjectResource::class;
-    protected $withModels = ['category', 'materials'];
+    protected $withModels = ['materials'];
 }

@@ -13,7 +13,6 @@ class SubjectDTO implements DTOInterface
     public $name;
     public $slug;
     public $count;
-    public $category_id;
     public $responsible_worker;
 
     
@@ -23,7 +22,6 @@ class SubjectDTO implements DTOInterface
             "name" => $this->id ? "required|unique:subjects,name,".$this->id : "required|unique:subjects,name",
             "slug" => "required",
             "count" => "required",
-            "category_id" => "required|int",
             "responsible_worker" => "required",
         ];
     }

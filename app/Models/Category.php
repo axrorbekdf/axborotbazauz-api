@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
-{
-    
+{   
     use HasFactory, Searchable, QueryFilter;
 
     protected $fillable = [
@@ -24,10 +23,6 @@ class Category extends Model
         "count",
         "responsible_worker",
     ];
-
-    public function subjects(){
-        return $this->hasMany(Subject::class);
-    }
 
     public function materials(){
         return $this->hasMany(Material::class);
