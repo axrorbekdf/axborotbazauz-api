@@ -703,6 +703,7 @@ class PermissionSeeder extends Seeder
             'phone' => "998999152409",
             'login' => null,
             'email' => null,
+            'role' => 'admin',
             'password' => Hash::make("123456"),
             'responsible_worker' => "command:api"
         ]);
@@ -714,6 +715,7 @@ class PermissionSeeder extends Seeder
             'phone' => "998997070780",
             'login' => null,
             'email' => null,
+            'role' => 'admin',
             'password' => Hash::make("123456"),
             'responsible_worker' => "command:api"
         ]);

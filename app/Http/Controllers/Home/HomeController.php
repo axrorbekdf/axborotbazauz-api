@@ -25,7 +25,6 @@ class HomeController extends Controller
     public function subjects(Request $request){
         $model = Subject::query()
             ->search($request->search)
-            ->with('category')
             ->get();
 
         return successResponse(SubjectForHomeResource::collection($model));
