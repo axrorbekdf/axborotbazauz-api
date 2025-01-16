@@ -38,16 +38,8 @@ class AuthController extends Controller
             elseif (!$user->is_active) {
                 return errorResponse("User is not active!");
             } else {
-                return successResponse([
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'phone' => $user->phone,
-                    // 'login' => $user->login,
-                    // 'email' => $user->email,
-                    'is_active' => $user->is_active,
-                    'token' => $user->createToken('token')->plainTextToken,
-                    'role' => $user->role,
-                ]);
+                $user->token = $user->createToken('token')->plainTextToken;
+                return successResponse(UserForHomeResource::make($user));
             }
         } else {
             return authFailed();

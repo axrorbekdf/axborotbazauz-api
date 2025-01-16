@@ -17,7 +17,7 @@ class SubscriptionHistoryForHomeResource extends JsonResource
         return [
             "start_date" => $this->start_date,
             "end_date" => $this->end_date,
-            "created_at" => dateFormat($this->created_at),
+            "date" => dateFormat($this->created_at),
             "subscription" => SubscriptionForHomeResource::make($this->subscription),
             "payment" => $this->payment->name ?? null,
         ];

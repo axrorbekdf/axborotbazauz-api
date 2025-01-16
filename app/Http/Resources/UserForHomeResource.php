@@ -20,6 +20,7 @@ class UserForHomeResource extends JsonResource
             'phone' => $this->phone,
             'is_active' => $this->is_active,
             'role' => $this->role,
+            'token' => $this->token ?? null,
             'obuna' => SubscriptionHistoryForHomeResource::collection($this->subscriptionHistory)
         ];
     }
