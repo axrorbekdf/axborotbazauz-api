@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('price')->nullable();
-            $table->json('period')->nullable();
+            $table->string('period')->nullable();
             $table->string('responsible_worker')->nullable();
             $table->timestamps();
         });

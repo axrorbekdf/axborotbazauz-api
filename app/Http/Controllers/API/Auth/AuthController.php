@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserForHomeResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,15 +14,9 @@ class AuthController extends Controller
     public function me()
     {
         $user = Auth::user();
-        return successResponse([
-            'id' => $user->id,
-            'name' => $user->name,
-            'phone' => $user->phone,
-            'login' => $user->login,
-            'email' => $user->email,
-            'is_active' => $user->is_active,
-            // 'role' => $user->role,
-        ]);
+
+        $user = User::with('subscriptionHistory')->find($user->id);
+        return successResponse(UserForHomeResource::make($user));
     }
 
     public function loginWithPhone(Request $request)
@@ -47,11 +42,11 @@ class AuthController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'phone' => $user->phone,
-                    'login' => $user->login,
-                    'email' => $user->email,
+                    // 'login' => $user->login,
+                    // 'email' => $user->email,
                     'is_active' => $user->is_active,
                     'token' => $user->createToken('token')->plainTextToken,
-                    // 'role' => $user->role,
+                    'role' => $user->role,
                 ]);
             }
         } else {
