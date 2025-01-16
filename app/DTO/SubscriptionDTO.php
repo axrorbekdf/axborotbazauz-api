@@ -21,7 +21,7 @@ class SubscriptionDTO implements DTOInterface
         return [
             "name" => $this->id ? "required|unique:subscriptions,name,".$this->id : "required|unique:subscriptions,name",
             "price" => "required|int",
-            "period" => "required|array",
+            "period" => "required|int",
             "responsible_worker" => "required"
         ];
     }
