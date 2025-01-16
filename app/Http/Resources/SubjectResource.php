@@ -23,7 +23,6 @@ class SubjectResource extends JsonResource
             "responsible_worker" => $this->responsible_worker,
             "created_at" => dateFormat($this->created_at),
             "updated_at" => dateFormat($this->updated_at),
-            "category" => CategoryForRelationResource::make($this->category),
             "materials" => MaterialForRelationResource::collection($this->materials),
         ];
     }

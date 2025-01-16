@@ -22,7 +22,6 @@ class CategoryResource extends JsonResource
             "responsible_worker" => $this->responsible_worker,
             "created_at" => dateFormat($this->created_at),
             "updated_at" => dateFormat($this->updated_at),
-            "subjects" => SubjectForRelationResource::collection($this->subjects),
             "materials" => MaterialForRelationResource::collection($this->materials)
         ];
     }

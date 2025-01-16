@@ -18,8 +18,7 @@ class SubjectForHomeResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "slug" => $this->slug,
-            "category" => CategoryForHomeInSubjectResource::make($this->category)
+            "slug" => $this->slug
         ];
     }
 }
