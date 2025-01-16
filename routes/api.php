@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('v1/auth/login', [AuthController::class, 'loginWithLogin']);
 Route::post('v2/auth/login', [AuthController::class, 'loginWithPhone']);
 Route::post('v3/auth/login', [AuthController::class, 'loginWithEmail']);
+Route::post('user/register', [UserController::class, 'register']);
 Route::post('file', [MaterialController::class, 'readPdfAndReadWordPages']);
 
 

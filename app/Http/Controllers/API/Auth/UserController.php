@@ -59,6 +59,25 @@ class UserController extends Controller
        
     }
 
+
+    public function register(){
+
+        $data = $this->classDTO->fromRequest([
+            "name" => request()->name,
+            "phone" => request()->phone,
+            "password" => request()->password ? Hash::make(request()->password) : null,
+            "is_active" => request()->get("is_active", true),
+            "role" => request()->get("role", "user"),
+            "responsible_worker" => Auth::user()->name ?? "Not name",
+        ]);
+        
+        if(is_array($data))
+            return $data;
+
+        return $this->serviceClass->register($data->toArray());
+       
+    }
+
     public function update(string $id){
 
         $data = $this->classDTO->fromRequest([

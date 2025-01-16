@@ -26,6 +26,22 @@ class UserCRUDService extends CRUDService
 
         return successResponse($this->modelResourceClass::make($model));
     }
+
+    public function register(array $data){
+        
+        $model = $this->modelClass::create($data);
+
+        if($model && $model->is_active){
+            return successResponse(
+                "Foydalanuvchi yaratildi!"
+                // [
+                //     'token' => $model->createToken('token')->plainTextToken
+                // ]
+            );
+        }
+
+        return successResponse($this->modelResourceClass::make($model));
+    }
     
     public function update(string $id, $data){
 
