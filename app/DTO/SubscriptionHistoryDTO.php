@@ -24,8 +24,8 @@ class SubscriptionHistoryDTO implements DTOInterface
             "user_id" => "required|int",
             "subscription_id" => "required|int",
             "payment_id" => "required|int",
-            "start_date" => "required",
-            "end_date" => "required",
+            // "start_date" => "required",
+            // "end_date" => "required",
             "responsible_worker" => "required",
         ];
     }

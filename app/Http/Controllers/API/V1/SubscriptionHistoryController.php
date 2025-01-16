@@ -44,8 +44,8 @@ class SubscriptionHistoryController extends Controller
             "user_id" => request()->user_id,
             "subscription_id" => request()->subscription_id,
             "payment_id" => request()->payment_id,
-            "start_date" => request()->start_date,
-            "end_date" => request()->end_date,
+            "start_date" => request()->start_date ?? null,
+            "end_date" => request()->end_date ?? null,
             "responsible_worker" => Auth::user()->name ?? "Not name",
         ]);
         
@@ -63,8 +63,8 @@ class SubscriptionHistoryController extends Controller
             "user_id" => request()->user_id,
             "subscription_id" => request()->subscription_id,
             "payment_id" => request()->payment_id,
-            "start_date" => request()->start_date,
-            "end_date" => request()->end_date,
+            "start_date" => request()->start_date ?? null,
+            "end_date" => request()->end_date ?? null,
             "responsible_worker" => Auth::user()->name ?? "Not name",
         ]);
         
