@@ -31,10 +31,12 @@ class HomeController extends Controller
     }
 
     public function materials(Request $request){
+
         $model = Material::query()
-            ->search($request->search)
             ->with('category','subject', 'pages')
-            ->get();
+            ->search($request->search)
+            ->filter($request->all())
+            ->paginate($request->perPage ?? 10);
 
         return successResponse(MaterialResource::collection($model));
     }
