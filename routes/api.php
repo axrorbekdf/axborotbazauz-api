@@ -38,7 +38,7 @@ Route::controller(HomeController::class)
         Route::get('/category', 'categories');
         Route::get('/subject', 'subjects');
         Route::get('/material', 'materials');
-        Route::get('/material/{slug}', 'materialShow');
+        Route::get('/material/show/{slug}', 'materialShow');
     });
 
 Route::middleware('auth:sanctum')->group(function () {
