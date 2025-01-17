@@ -29,6 +29,7 @@ class MaterialShowForHomeResource extends JsonResource
             "category_name" => $this->category->name ?? null,
             "subject_name" => $this->subject->name ?? null,
             "days_difference" => $today->diffInDays($this->created_at),
+            "date" => dateFormat($this->created_at),
             "pages" => MaterialPageForHomeResource::collection($this->pages)
         ];
     }
