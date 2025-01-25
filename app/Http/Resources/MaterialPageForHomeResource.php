@@ -17,7 +17,8 @@ class MaterialPageForHomeResource extends JsonResource
         return [
             "number" => $this->number,
             "content" => $this->content,
-            "previewPath" => $this->previewPath,
+            // "previewPath" => $this->previewPath,
+            "previewPath" => preg_replace('/(\.\w+)$/', '-watermarked$1', $this->previewPath),
         ];
     }
 }
