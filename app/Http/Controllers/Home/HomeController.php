@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Material;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -50,5 +51,27 @@ class HomeController extends Controller
             ->first();
 
         return successResponse(MaterialShowForHomeResource::make($model));
+    }
+
+    public function materialDownload(Request $request){
+
+       // Materialni slug bo‘yicha topish
+        $model = Material::where('slug', $request->slug)->first();
+
+        // Agar material topilmasa, xatolik qaytarish
+        if (!$model) {
+            return response()->json(['message' => 'Material not found'], 404);
+        }
+
+        // Fayl yo‘lini olish
+        $filePath = 'public/' . $model->path; // Baza maydoniga qarab o‘zgartiring
+
+        // Fayl mavjudligini tekshirish
+        if (!Storage::exists($filePath)) {
+            return response()->json(['message' => 'File not found'], 404);
+        }
+
+        // Faylni yuklab berish
+        return Storage::download($filePath, $model->original_name);
     }
 }

@@ -48,6 +48,13 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('auth/logout', 'logout');
         });
 
+        Route::controller(HomeController::class)
+            // ->middleware('basicAuth')
+            ->prefix('v1')
+            ->group(function () {
+                Route::get('download/material/{slug}', 'materialDownload');
+            }); 
+
         Route::controller(UserController::class)
             // ->middleware('basicAuth')
             ->group(function () {
