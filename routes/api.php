@@ -39,6 +39,7 @@ Route::controller(HomeController::class)
         Route::get('/subject', 'subjects');
         Route::get('/material', 'materials');
         Route::get('/material/show/{slug}', 'materialShow');
+        Route::get('download/material/{slug}', 'materialDownload');
     });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -48,12 +49,12 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('auth/logout', 'logout');
         });
 
-        Route::controller(HomeController::class)
-            // ->middleware('basicAuth')
-            ->prefix('v1')
-            ->group(function () {
-                Route::get('download/material/{slug}', 'materialDownload');
-            }); 
+        // Route::controller(HomeController::class)
+        //     // ->middleware('basicAuth')
+        //     ->prefix('v1')
+        //     ->group(function () {
+        //         Route::get('download/material/{slug}', 'materialDownload');
+        //     }); 
 
         Route::controller(UserController::class)
             // ->middleware('basicAuth')
