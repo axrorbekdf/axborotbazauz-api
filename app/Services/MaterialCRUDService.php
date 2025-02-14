@@ -44,7 +44,7 @@ class MaterialCRUDService extends CRUDService
 
         $filePath = $file->storeAs('uploads/'.$fayl_upload_tima,$fileName, 'public');
 
-        if (strtolower($file->getClientOriginalExtension()) === "pptx") {
+        if (strtolower($file->getClientOriginalExtension()) === "pptx" || strtolower($file->getClientOriginalExtension()) === "ppt") {
 
             $scriptPath = app_path('python/scripts/pptToPdfLinux.py');
             
@@ -65,7 +65,7 @@ class MaterialCRUDService extends CRUDService
         
 
         // if (strtolower($file->getClientOriginalExtension()) === "docx") {
-        if (file_exists(storage_path("app/public/".$filePath)) && strtolower($file->getClientOriginalExtension()) === "docx") {
+        if (file_exists(storage_path("app/public/".$filePath)) && (strtolower($file->getClientOriginalExtension()) === "docx" || strtolower($file->getClientOriginalExtension()) === "doc")) {
 
             $scriptPath = app_path('python/scripts/docToPdfLinux.py');
             
