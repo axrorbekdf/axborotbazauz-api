@@ -12,7 +12,7 @@ def change_extension(input_path):
 def pptx_to_pdf(input_file):
     """ LibreOffice yordamida PPTX faylni PDF formatiga o'tkazish """
     try:
-        subprocess.run(["libreoffice", "--headless", "--convert-to", "pdf", input_file], check=True)
+        subprocess.run(["libreoffice", "--headless", "--convert-to", "pdf:writer_pdf_Export", input_file], check=True)
         print(f"Konvertatsiya muvaffaqiyatli bajarildi: {input_file} -> {change_extension(input_file)}")
     except subprocess.CalledProcessError as e:
         print(f"Xatolik yuz berdi: {e}")
