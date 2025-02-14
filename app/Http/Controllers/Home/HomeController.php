@@ -64,7 +64,7 @@ class HomeController extends Controller
         }
 
         // Fayl yo‘lini olish
-        $filePath = 'public/' . $model->path; // Baza maydoniga qarab o‘zgartiring
+        $filePath = 'public/' . str_replace('.pdf', $model->type, $model->path); // Baza maydoniga qarab o‘zgartiring
 
         // Fayl mavjudligini tekshirish
         if (!Storage::exists($filePath)) {
@@ -72,6 +72,6 @@ class HomeController extends Controller
         }
 
         // Faylni yuklab berish
-        return Storage::download($filePath, $model->original_name);
+        return Storage::download($filePath, $model->title);
     }
 }
