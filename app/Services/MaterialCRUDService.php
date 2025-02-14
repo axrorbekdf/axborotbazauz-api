@@ -40,8 +40,7 @@ class MaterialCRUDService extends CRUDService
         //     'slug' => 'required|string|unique:materials,slug,' . $material_id,
         // ];
     
-        // if ($validate !== true) 
-        return $validate;
+        if ($validate !== true) return $validate;
 
         $filePath = $file->storeAs('uploads/'.$fayl_upload_tima,$fileName, 'public');
 
