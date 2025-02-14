@@ -5,7 +5,7 @@ import subprocess
 def change_extension(input_path):
     """ Fayl kengaytmasini .pdf ga o'zgartirish """
     file_name, ext = os.path.splitext(input_path)
-    if ext.lower() == '.pptx':
+    if ext.lower() == '.pptx' or ext.lower() == '.ppt':
         return file_name + '.pdf'
     return None
 
