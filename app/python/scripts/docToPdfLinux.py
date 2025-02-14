@@ -5,7 +5,7 @@ import subprocess
 def change_extension(input_path):
     """ DOCX faylni PDF ga o'zgartirish uchun yangi fayl yo'lini yaratish """
     file_name, ext = os.path.splitext(input_path)
-    if ext.lower() == '.docx':
+    if ext.lower() == '.docx' or ext.lower() == '.doc':
         return file_name + '.pdf'
     return None
 
