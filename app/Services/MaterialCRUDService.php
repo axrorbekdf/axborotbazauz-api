@@ -41,7 +41,7 @@ class MaterialCRUDService extends CRUDService
 
             // Python skriptni ishga tushirish
             $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
-            return $output;
+            // return $output;
             
             // Fayl yo‘lini ajratish
             $info = pathinfo($filePath);
@@ -63,7 +63,7 @@ class MaterialCRUDService extends CRUDService
             // Python skriptni ishga tushirish
             // return "python3.9 $scriptPath $arg1 2>&1";
             $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
-            return $output;
+            // return $output;
 
             // Fayl yo‘lini ajratish
             $info = pathinfo($filePath);
