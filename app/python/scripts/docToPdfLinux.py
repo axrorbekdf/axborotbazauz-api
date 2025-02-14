@@ -12,7 +12,7 @@ def change_extension(input_path):
 def doc_to_pdf(input_path, output_path):
     """ LibreOffice orqali DOCX faylni PDF formatiga o'tkazish """
     try:
-        subprocess.run(["soffice", "--headless", "--convert-to", "pdf:writer_pdf_Export", input_path], check=True)
+        subprocess.run(["libreoffice", "--headless", "-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}", "--convert-to", "pdf:writer_pdf_Export", input_path], check=True)
         print(f"Konvertatsiya muvaffaqiyatli bajarildi: {output_path}")
     except subprocess.CalledProcessError as e:
         print(f"Xatolik yuz berdi: {e}")
