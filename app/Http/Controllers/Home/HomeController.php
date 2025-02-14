@@ -72,6 +72,6 @@ class HomeController extends Controller
         }
 
         // Faylni yuklab berish
-        return Storage::download($filePath, $model->title);
+        return Storage::download($filePath, $model->original_name);
     }
 }
