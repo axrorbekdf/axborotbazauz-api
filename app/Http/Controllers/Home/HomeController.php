@@ -66,6 +66,7 @@ class HomeController extends Controller
         // Fayl yo‘lini olish
         $filePath = 'public/' . str_replace('.pdf', $model->type, $model->path); // Baza maydoniga qarab o‘zgartiring
 
+        return $filePath;
         // Fayl mavjudligini tekshirish
         if (!Storage::exists($filePath)) {
             return response()->json(['message' => 'File not found'], 404);
