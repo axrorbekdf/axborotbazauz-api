@@ -40,7 +40,7 @@ class MaterialCRUDService extends CRUDService
             // $arg2 = escapeshellarg($request->input('arg2', 'default2')); // Ikkinchi argument
 
             // Python skriptni ishga tushirish
-            $output = shell_exec("python $scriptPath $arg1 2>&1");
+            $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
             
             // Fayl yo‘lini ajratish
             $info = pathinfo($filePath);
@@ -60,7 +60,7 @@ class MaterialCRUDService extends CRUDService
             // $arg2 = escapeshellarg($request->input('arg2', 'default2')); // Ikkinchi argument
 
             // Python skriptni ishga tushirish
-            $output = shell_exec("python $scriptPath $arg1 2>&1");
+            $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
 
             // Fayl yo‘lini ajratish
             $info = pathinfo($filePath);
