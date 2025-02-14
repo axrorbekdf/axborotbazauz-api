@@ -33,7 +33,7 @@ class MaterialCRUDService extends CRUDService
 
         if (strtolower($file->getClientOriginalExtension()) === "pptx") {
 
-            $scriptPath = app_path('python/scripts/pptToPdf.py');
+            $scriptPath = app_path('python/scripts/pptToPdfLinux.py');
             
             // Argumentlarni yuborish
             $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
@@ -53,7 +53,7 @@ class MaterialCRUDService extends CRUDService
         // if (strtolower($file->getClientOriginalExtension()) === "docx") {
         if (file_exists(storage_path("app/public/".$filePath)) && strtolower($file->getClientOriginalExtension()) === "docx") {
 
-            $scriptPath = app_path('python/scripts/docToPdf.py');
+            $scriptPath = app_path('python/scripts/docToPdfLinux.py');
             
             // Argumentlarni yuborish
             $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
