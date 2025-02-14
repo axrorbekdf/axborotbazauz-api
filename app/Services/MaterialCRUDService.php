@@ -29,6 +29,20 @@ class MaterialCRUDService extends CRUDService
         $fayl_upload_tima = time();
         $fileName = $fayl_upload_tima . '-' . Str::slug($basename).'.'.$extension;
 
+        $validate = validate([
+            'slug' => Str::slug($basename)
+        ], [
+            'slug' => 'required|string|unique:materials,slug',
+        ]);
+
+        // Update qilishda kerak bo'ladi
+        // $rules = [
+        //     'slug' => 'required|string|unique:materials,slug,' . $material_id,
+        // ];
+    
+        // if ($validate !== true) 
+        return $validate;
+
         $filePath = $file->storeAs('uploads/'.$fayl_upload_tima,$fileName, 'public');
 
         if (strtolower($file->getClientOriginalExtension()) === "pptx") {
