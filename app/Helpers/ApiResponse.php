@@ -32,7 +32,9 @@ if (!function_exists('validate')) {
         $validate = Validator::make($params, $rules);
 
         if ($validate->fails()) {
-            return validationError($validate);
+            return validationError([
+                "shuyerda"=> $validate
+            ]);
         }
 
         return true;
