@@ -32,9 +32,7 @@ if (!function_exists('validate')) {
         $validate = Validator::make($params, $rules);
 
         if ($validate->fails()) {
-            return validationError([
-                "shuyerda"=> $validate
-            ]);
+            return validationError($validate);
         }
 
         return true;
@@ -47,6 +45,7 @@ if (!function_exists('validationError')) {
         return [
             'status' => false,
             'error' => [
+                'sss' => "shu yerda", 
                 'message' => $validation->errors()
             ]
         ];
