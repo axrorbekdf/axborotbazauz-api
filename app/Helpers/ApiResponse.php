@@ -45,7 +45,6 @@ if (!function_exists('validationError')) {
         return [
             'status' => false,
             'error' => [
-                'sss' => "shu yerda", 
                 'message' => $validation->errors()
             ]
         ];
