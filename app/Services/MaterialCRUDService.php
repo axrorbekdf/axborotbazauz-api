@@ -10,6 +10,7 @@ use Smalot\PdfParser\Parser;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use ZipArchive;
 
 class MaterialCRUDService extends CRUDService
 {
@@ -43,10 +44,45 @@ class MaterialCRUDService extends CRUDService
         if ($validate !== true) return $validate;
 
         $filePath = $file->storeAs('uploads/'.$fayl_upload_tima,$fileName, 'public');
+        $file_type = $file->getClientOriginalExtension();
+        
+        if (file_exists(storage_path("app/public/".$filePath)) && (strtolower($file_type) === "zip" || strtolower($file_type) === "zip")) {
 
-        if (strtolower($file->getClientOriginalExtension()) === "pptx" || strtolower($file->getClientOriginalExtension()) === "ppt") {
+            $zip = new ZipArchive();
+            $zipFilePath = storage_path("app/public/".$filePath); // ZIP fayl joylashuvi
+            $extractToPath = storage_path("app/public/uploads/".$fayl_upload_tima); // Chiqarish joyi
+    
+            if ($zip->open($zipFilePath) === TRUE) {
+                $zip->extractTo($extractToPath); // Fayllarni ochish
+    
+                // ZIP ichidagi fayllar ro'yxatini olish
+                $fileList = [];
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $fileList[] = $zip->getNameIndex($i); // Har bir fayl nomini olish
+                }
+                $zip->close();
+                
+                // return $fileList[0];
+    
+                if(file_exists(storage_path("app/public/uploads/".$fayl_upload_tima."/".$fileList[0]))){
+    
+                    // Fayl yo‘lini ajratish
+                    $info = pathinfo($fileList[0]);
+        
+                    // Yangi kengaytma bilan fayl yo‘li
+                    $filePath = "uploads/".$fayl_upload_tima . '/' . $info['basename'];
+                    $file_type = $info['extension'];
+                }
+            } else {
+                return 0;
+            }
+        }
+
+
+        if (file_exists(storage_path("app/public/".$filePath)) && (strtolower($file_type) === "pptx" || strtolower($file_type) === "ppt")) {
 
             $scriptPath = app_path('python/scripts/pptToPdfLinux.py');
+            // $scriptPath = app_path('python/scripts/pptToPdf.py');
             
             // Argumentlarni yuborish
             $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
@@ -54,6 +90,7 @@ class MaterialCRUDService extends CRUDService
 
             // Python skriptni ishga tushirish
             $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
+            // $output = shell_exec("python $scriptPath $arg1 2>&1");
             // return $output;
             
             // Fayl yo‘lini ajratish
@@ -64,10 +101,10 @@ class MaterialCRUDService extends CRUDService
         }
         
 
-        // if (strtolower($file->getClientOriginalExtension()) === "docx") {
-        if (file_exists(storage_path("app/public/".$filePath)) && (strtolower($file->getClientOriginalExtension()) === "docx" || strtolower($file->getClientOriginalExtension()) === "doc")) {
+        if (file_exists(storage_path("app/public/".$filePath)) && (strtolower($file_type) === "docx" || strtolower($file_type) === "doc")) {
 
             $scriptPath = app_path('python/scripts/docToPdfLinux.py');
+            // $scriptPath = app_path('python/scripts/docToPdf.py');
             
             // Argumentlarni yuborish
             $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
@@ -76,7 +113,7 @@ class MaterialCRUDService extends CRUDService
             // Python skriptni ishga tushirish
             // return "python3.9 $scriptPath $arg1 2>&1";
             $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
-            // return $output;
+            // $output = shell_exec("python $scriptPath $arg1 2>&1");
 
             // Fayl yo‘lini ajratish
             $info = pathinfo($filePath);
@@ -128,7 +165,7 @@ class MaterialCRUDService extends CRUDService
                 $fontSize = 120; // Shrift hajmi
                 $angle = 55; // Matn burchagi
 
-                if(strtolower($file->getClientOriginalExtension()) === "pptx"){
+                if(strtolower($file_type) === "pptx"){
                     $angle = 35; // Matn burchagi
                 }
 
@@ -189,5 +226,17 @@ class MaterialCRUDService extends CRUDService
             'type' => $extension,
             'pages' => $allPages, // Har bir sahifani alohida ko‘rsatish
         ]);
+    }
+
+
+    public function readPdfAndReadWordPagesLocal($data){
+
+        $result = [];
+        foreach($data as $item){
+            $natija = $this->readPdfAndReadWordPages($item['file'], $item['request']);
+            array_push($result, $natija);
+        }
+
+        return $result;
     }
 }

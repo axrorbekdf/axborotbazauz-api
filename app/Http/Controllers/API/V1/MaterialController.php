@@ -5,9 +5,13 @@ namespace App\Http\Controllers\API\V1;
 use App\DTO\MaterialDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Material;
+use App\Models\Subject;
 use App\Services\MaterialCRUDService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class MaterialController extends Controller
 {
@@ -95,7 +99,7 @@ class MaterialController extends Controller
             'title' => "required",
             'category_id' => "required",
             'subject_id' => "required",
-            'file' => 'required|mimes:pdf,docx,doc,pptx,ppt|max:20480', // Faqat PDF,PPT,DOC fayllar uchun
+            'file' => 'required|mimes:pdf,docx,doc,pptx,ppt,zip|max:20480', // Faqat PDF,PPT,DOC fayllar uchun
         ]);
     
         if ($validate !== true) return $validate;
@@ -106,4 +110,74 @@ class MaterialController extends Controller
         return $this->serviceClass->readPdfAndReadWordPages($file, $request);
        
     }
+
+
+    public function readPdfAndReadWordPagesLocalUploads()
+    {   
+
+        $basePath = 'D:\Arxiv.uz\diplom-ishlar\zoologiya\\';
+        $files = File::allFiles($basePath);
+        $filenames = [];
+        foreach ($files as $file) {
+            $relativePath = str_replace($basePath, '', $file->getPathname());
+            $filenames[] = $relativePath;
+        }
+
+        $local_data = [];
+        foreach($filenames as $filename){
+            
+            $filePath = $basePath.$filename; // Faylning to‘liq yo‘li
+            // dd(basename(dirname($filename)));
+            
+            if (!file_exists($filePath)) {
+                continue;
+            }
+
+            // Fake UploadedFile yaratish
+            $file = new UploadedFile(
+                $filePath,
+                basename($filePath),
+                mime_content_type($filePath),
+                null,
+                true // $test = true, ya'ni bu test fayl ekanligini bildiradi
+            );
+
+            // $subject = Subject::where('slug', basename(dirname($filename)))->first();
+            // Fake request yaratish va faylni qo‘shish
+            $request = new Request();
+            $request->files->set('file', $file);
+            $request->merge([
+                'title' => Str::headline(pathinfo($filename, PATHINFO_FILENAME)),
+                'category_id' => 2,
+                'subject_id' => 66,
+            ]);
+            
+            // Validayatsiya
+            // $validate = validator($request->all(), [
+            //     'title' => "required",
+            //     'category_id' => "required",
+            //     'subject_id' => "required",
+            //     'file' => 'required|mimes:pdf,docx,doc,pptx,ppt,zip|max:504800', // Faqat PDF, PPT, DOC, ZIP fayllar uchun
+            // ]);
+            
+            // if ($validate !== true) {
+            //     continue;
+            // }
+    
+            
+            // Faylni olish
+            $file_alohida = $request->file('file');
+            array_push($local_data, [
+                "file" => $file_alohida,
+                "request" => $request
+            ]);
+        
+        }
+        
+        $result = $this->serviceClass->readPdfAndReadWordPagesLocal($local_data);
+        return response()->json($result);
+
+
+    }
+
 }

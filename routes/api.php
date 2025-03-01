@@ -136,6 +136,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
+    // Route::controller(MaterialController::class)
+    //     ->group(function () {
+    //         Route::get('/material/local/uploaded', 'readPdfAndReadWordPagesLocalUploads');
+    //     });
     
 
 

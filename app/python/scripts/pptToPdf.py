@@ -5,7 +5,7 @@ import os
 def change_extension(input_path):
     # Faylning kengaytmasini o'zgartirish
     file_name, ext = os.path.splitext(input_path)
-    if ext.lower() == '.pptx':  # Agar kengaytma .pptx bo'lsa
+    if ext.lower() == '.pptx' or ext.lower() == '.ppt':  # Agar kengaytma .pptx bo'lsa
         new_path = file_name + '.pdf'  # .pdf kengaytmasini qo'shish
         return new_path
     return None
