@@ -6,6 +6,7 @@ use App\DTO\MaterialDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Material;
 use App\Models\Subject;
+use App\Services\FileService;
 use App\Services\MaterialCRUDService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -123,6 +124,7 @@ class MaterialController extends Controller
             $filenames[] = $relativePath;
         }
 
+
         $local_data = [];
         foreach($filenames as $filename){
             
@@ -180,4 +182,13 @@ class MaterialController extends Controller
 
     }
 
+
+    // public function deleteFiles(Request $request)
+    // {
+    //     $extension = $request->input('extension', 'pptx'); // default txt
+    //     $directory = storage_path('app/public/uploads');
+
+    //     $message = FileService::deleteFilesByExtension($directory, $extension);
+    //     return response()->json(['message' => $message]);
+    // }
 }
