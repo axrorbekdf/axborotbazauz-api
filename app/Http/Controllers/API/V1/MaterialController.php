@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MaterialController extends Controller
@@ -190,5 +191,25 @@ class MaterialController extends Controller
 
     //     $message = FileService::deleteFilesByExtension($directory, $extension);
     //     return response()->json(['message' => $message]);
+    // }
+
+    // public function deleteFilesPageImages(Request $request)
+    // {
+
+    //     $folders = Storage::disk('public')->directories('uploads'); // 'storage/app/public/test' ichidagi barcha papkalarni olish
+        
+    //     foreach ($folders as $folder) {
+    //         $files = Storage::disk('public')->files($folder);
+    //         foreach ($files as $file) {
+    //             // Faqat "page-{raqam}.jpg" formatidagi fayllarni o‘chirish
+    //             if (preg_match('/page-\d+\.jpg$/', basename($file))) {
+    //                 Storage::disk('public')->delete($file);
+    //             }
+    //         }
+    //     }
+
+    //     echo "Faqat 'page-{raqam}.jpg' shaklidagi rasmlar o‘chirildi.";
+
+
     // }
 }

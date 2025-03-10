@@ -140,6 +140,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->group(function () {
             // Route::get('/material/local/uploaded', 'readPdfAndReadWordPagesLocalUploads');
             // Route::get('/material/local/delete', 'deleteFiles');
+            // Route::get('/material/page/images/delete', 'deleteFilesPageImages');
         });
     
 

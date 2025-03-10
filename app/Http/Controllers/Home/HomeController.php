@@ -40,7 +40,7 @@ class HomeController extends Controller
             ->filter($request->all())
             ->paginate($request->perPage ?? 10);
 
-        return successResponse(MaterialForHomeResource::collection($model));
+        return successResponse(MaterialForHomeResource::collection($model)->response()->getData(true));
     }
 
     public function materialShow(Request $request){
