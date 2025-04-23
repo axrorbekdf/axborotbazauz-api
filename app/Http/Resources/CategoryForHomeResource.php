@@ -18,7 +18,7 @@ class CategoryForHomeResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "slug" => $this->slug,
-            "count" => $this->total_materials,
+            "count" => $this->total_materials != 0 ? $this->total_materials : $this->count,
         ];
     }
 }
