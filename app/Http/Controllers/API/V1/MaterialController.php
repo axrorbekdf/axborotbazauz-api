@@ -117,7 +117,7 @@ class MaterialController extends Controller
     public function readPdfAndReadWordPagesLocalUploads()
     {   
 
-        $basePath = 'D:\Arxiv.uz\diplom-ishlar\zoologiya\\';
+        $basePath = 'D:\Arxiv.uz\referatlar\huquqshunoslik\\';
         $files = File::allFiles($basePath);
         $filenames = [];
         foreach ($files as $file) {
@@ -125,7 +125,7 @@ class MaterialController extends Controller
             $filenames[] = $relativePath;
         }
 
-
+        // dd($filenames);
         $local_data = [];
         foreach($filenames as $filename){
             
@@ -151,8 +151,8 @@ class MaterialController extends Controller
             $request->files->set('file', $file);
             $request->merge([
                 'title' => Str::headline(pathinfo($filename, PATHINFO_FILENAME)),
-                'category_id' => 2,
-                'subject_id' => 66,
+                'category_id' => 5,
+                'subject_id' => 22,
             ]);
             
             // Validayatsiya
@@ -176,7 +176,7 @@ class MaterialController extends Controller
             ]);
         
         }
-        
+
         $result = $this->serviceClass->readPdfAndReadWordPagesLocal($local_data);
         return response()->json($result);
 
@@ -184,32 +184,32 @@ class MaterialController extends Controller
     }
 
 
-    // public function deleteFiles(Request $request)
-    // {
-    //     $extension = $request->input('extension', 'pptx'); // default txt
-    //     $directory = storage_path('app/public/uploads');
+    public function deleteFiles(Request $request)
+    {
+        $extension = $request->input('extension', 'pdf'); // default docx,doc,ppt,pptx,pdf
+        $directory = storage_path('app/public/uploads');
 
-    //     $message = FileService::deleteFilesByExtension($directory, $extension);
-    //     return response()->json(['message' => $message]);
-    // }
+        $message = FileService::deleteFilesByExtension($directory, $extension);
+        return response()->json(['message' => $message]);
+    }
 
-    // public function deleteFilesPageImages(Request $request)
-    // {
+    public function deleteFilesPageImages(Request $request)
+    {
 
-    //     $folders = Storage::disk('public')->directories('uploads'); // 'storage/app/public/test' ichidagi barcha papkalarni olish
+        $folders = Storage::disk('public')->directories('uploads'); // 'storage/app/public/test' ichidagi barcha papkalarni olish
         
-    //     foreach ($folders as $folder) {
-    //         $files = Storage::disk('public')->files($folder);
-    //         foreach ($files as $file) {
-    //             // Faqat "page-{raqam}.jpg" formatidagi fayllarni o‘chirish
-    //             if (preg_match('/page-\d+\.jpg$/', basename($file))) {
-    //                 Storage::disk('public')->delete($file);
-    //             }
-    //         }
-    //     }
+        foreach ($folders as $folder) {
+            $files = Storage::disk('public')->files($folder);
+            foreach ($files as $file) {
+                // Faqat "page-{raqam}.jpg" formatidagi fayllarni o‘chirish
+                if (preg_match('/page-\d+\.jpg$/', basename($file))) {
+                    Storage::disk('public')->delete($file);
+                }
+            }
+        }
 
-    //     echo "Faqat 'page-{raqam}.jpg' shaklidagi rasmlar o‘chirildi.";
+        echo "Faqat 'page-{raqam}.jpg' shaklidagi rasmlar o‘chirildi.";
 
 
-    // }
+    }
 }

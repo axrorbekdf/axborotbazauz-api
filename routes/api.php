@@ -138,9 +138,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(MaterialController::class)
         ->group(function () {
-            // Route::get('/material/local/uploaded', 'readPdfAndReadWordPagesLocalUploads');
-            // Route::get('/material/local/delete', 'deleteFiles');
-            // Route::get('/material/page/images/delete', 'deleteFilesPageImages');
+            Route::get('/material/local/uploaded', 'readPdfAndReadWordPagesLocalUploads');
+            Route::get('/material/local/delete', 'deleteFiles');
+            Route::get('/material/page/images/delete', 'deleteFilesPageImages');
         });
     
 
