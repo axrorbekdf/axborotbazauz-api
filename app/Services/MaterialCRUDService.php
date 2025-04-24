@@ -81,16 +81,16 @@ class MaterialCRUDService extends CRUDService
 
         if (file_exists(storage_path("app/public/".$filePath)) && (strtolower($file_type) === "pptx" || strtolower($file_type) === "ppt")) {
 
-            $scriptPath = app_path('python/scripts/pptToPdfLinux.py');
-            // $scriptPath = app_path('python/scripts/pptToPdf.py');
+            // $scriptPath = app_path('python/scripts/pptToPdfLinux.py');
+            $scriptPath = app_path('python/scripts/pptToPdf.py');
             
             // Argumentlarni yuborish
             $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
             // $arg2 = escapeshellarg($request->input('arg2', 'default2')); // Ikkinchi argument
 
             // Python skriptni ishga tushirish
-            $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
-            // $output = shell_exec("python $scriptPath $arg1 2>&1");
+            // $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
+            $output = shell_exec("python $scriptPath $arg1 2>&1");
             // return $output;
             
             // Fayl yo‘lini ajratish
@@ -103,8 +103,8 @@ class MaterialCRUDService extends CRUDService
 
         if (file_exists(storage_path("app/public/".$filePath)) && (strtolower($file_type) === "docx" || strtolower($file_type) === "doc")) {
 
-            $scriptPath = app_path('python/scripts/docToPdfLinux.py');
-            // $scriptPath = app_path('python/scripts/docToPdf.py');
+            // $scriptPath = app_path('python/scripts/docToPdfLinux.py');
+            $scriptPath = app_path('python/scripts/docToPdf.py');
             
             // Argumentlarni yuborish
             $arg1 = escapeshellarg(storage_path("app/public/".$filePath)); // Birinchi argument
@@ -112,8 +112,8 @@ class MaterialCRUDService extends CRUDService
 
             // Python skriptni ishga tushirish
             // return "python3.9 $scriptPath $arg1 2>&1";
-            $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
-            // $output = shell_exec("python $scriptPath $arg1 2>&1");
+            // $output = shell_exec("python3.9 $scriptPath $arg1 2>&1");
+            $output = shell_exec("python $scriptPath $arg1 2>&1");
 
             // Fayl yo‘lini ajratish
             $info = pathinfo($filePath);

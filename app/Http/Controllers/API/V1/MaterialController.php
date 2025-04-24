@@ -117,7 +117,7 @@ class MaterialController extends Controller
     public function readPdfAndReadWordPagesLocalUploads()
     {   
 
-        $basePath = 'D:\Arxiv.uz\referatlar\huquqshunoslik\\';
+        $basePath = 'D:\Arxiv.uz\referatlar\iqtisodiyot\\';
         $files = File::allFiles($basePath);
         $filenames = [];
         foreach ($files as $file) {
@@ -152,7 +152,7 @@ class MaterialController extends Controller
             $request->merge([
                 'title' => Str::headline(pathinfo($filename, PATHINFO_FILENAME)),
                 'category_id' => 5,
-                'subject_id' => 22,
+                'subject_id' => 25,
             ]);
             
             // Validayatsiya
