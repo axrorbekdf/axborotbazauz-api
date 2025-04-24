@@ -34,7 +34,6 @@ class HomeController extends Controller
 
     public function materials(Request $request){
 
-        dd($request);
         $model = Material::query()
             ->with('category','subject', 'pages')
             ->filter($request->all())
