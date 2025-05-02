@@ -10,11 +10,19 @@ use App\Http\Resources\SubjectForHomeResource;
 use App\Models\Category;
 use App\Models\Material;
 use App\Models\Subject;
+use App\Services\MaterialHomeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
+    protected $materialClass;
+
+    public function __construct()
+    {
+        $this->materialClass = new MaterialHomeService();
+    }
+
     public function categories(Request $request){
         $model = Category::query()
             ->search($request->search)
@@ -34,13 +42,15 @@ class HomeController extends Controller
 
     public function materials(Request $request){
 
-        $model = Material::query()
-            ->with('category','subject', 'pages')
-            ->filter($request->all())
-            ->search($request->search)
-            ->paginate($request->perPage ?? 10);
+        // $model = Material::query()
+        //     ->with('category','subject', 'pages')
+        //     ->filter($request->all())
+        //     ->search($request->search)
+        //     ->paginate($request->perPage ?? 10);
+        // return successResponse(MaterialForHomeResource::collection($model)->response()->getData(true));
 
-        return successResponse(MaterialForHomeResource::collection($model)->response()->getData(true));
+        return $this->materialClass->index();
+
     }
 
     public function materialShow(Request $request){
@@ -62,9 +72,14 @@ class HomeController extends Controller
         if (!$model) {
             return response()->json(['message' => 'Material not found'], 404);
         }
+        
+        $pathExplode = explode("/", $model->path);
+        $pathExplode[2] = $pathExplode[1]."-".$model->slug.".zip";
+        $modelPath = implode("/",$pathExplode);
 
         // Fayl yo‘lini olish
-        $filePath = 'public/' . str_replace('.pdf', ".".$model->type, $model->path); // Baza maydoniga qarab o‘zgartiring
+        // $filePath = 'public/' . str_replace('.zip', ".".$model->type, $model->path); // Baza maydoniga qarab o‘zgartiring
+        $filePath = 'public/' . $modelPath; // Baza maydoniga qarab o‘zgartiring
 
         // Fayl mavjudligini tekshirish
         if (!Storage::exists($filePath)) {

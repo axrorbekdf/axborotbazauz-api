@@ -14,6 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use ZipArchive;
 
 class MaterialController extends Controller
 {
@@ -116,8 +117,39 @@ class MaterialController extends Controller
 
     public function readPdfAndReadWordPagesLocalUploads()
     {   
+        // D diskdagi papkani ko'rsatamiz ////////////////////////////////////////////////////////////////////////////////////////
+        // $directoryPath = 'D:\Arxiv.uz\kurs-ishlari\huquqshunoslik\\';
 
-        $basePath = 'D:\Arxiv.uz\referatlar\iqtisodiyot\\';
+        // $zipFiles = glob($directoryPath . '/*.zip');
+
+        // $zipsWithDoc = [];
+
+        // foreach ($zipFiles as $zipFilePath) {
+        //     $zip = new ZipArchive;
+
+        //     if ($zip->open($zipFilePath) === TRUE) {
+        //         $hasDoc = false;
+        //         for ($i = 0; $i < $zip->numFiles; $i++) {
+        //             $filename = $zip->getNameIndex($i);
+        //             $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        //             if ($extension === 'rtf') {
+        //                 $hasDoc = true;
+        //                 break;
+        //             }
+        //         }
+        //         $zip->close();
+
+        //         if ($hasDoc) {
+        //             $zipsWithDoc[] = $zipFilePath;
+        //         }
+        //     }
+        // }
+
+        // dd($zipsWithDoc);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        $basePath = 'D:\Arxiv.uz\kurs-ishlari\zoologiya\\';
         $files = File::allFiles($basePath);
         $filenames = [];
         foreach ($files as $file) {
@@ -151,8 +183,8 @@ class MaterialController extends Controller
             $request->files->set('file', $file);
             $request->merge([
                 'title' => Str::headline(pathinfo($filename, PATHINFO_FILENAME)),
-                'category_id' => 5,
-                'subject_id' => 25,
+                'category_id' => 6,
+                'subject_id' => 66,
             ]);
             
             // Validayatsiya
