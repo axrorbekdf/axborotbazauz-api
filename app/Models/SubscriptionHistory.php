@@ -26,7 +26,7 @@ class SubscriptionHistory extends Model
         "payment.name",
         "start_date",
         "end_date",
-        "responsible_worker",
+        // "responsible_worker",
     ];
 
     public function user(){

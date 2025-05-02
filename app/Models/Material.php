@@ -25,13 +25,13 @@ class Material extends Model
 
     protected $searchable = [
         "title",
-        "slug",
-        "downloads",
+        // "slug",
+        // "downloads",
         "category.name",
         "subject.name",
-        "size",
-        "type",
-        "responsible_worker",
+        // "size",
+        // "type",
+        // "responsible_worker",
         "pages.content"
     ];
 

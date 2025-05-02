@@ -18,6 +18,6 @@ class Payment extends Model
 
     protected $searchable = [
         "name",
-        "responsible_worker"
+        // "responsible_worker"
     ];
 }

@@ -218,7 +218,7 @@ class MaterialController extends Controller
 
     public function deleteFiles(Request $request)
     {
-        $extension = $request->input('extension', 'pdf'); // default docx,doc,ppt,pptx,pdf
+        $extension = $request->input('extension', 'docx'); // default docx,doc,ppt,pptx,pdf
         $directory = storage_path('app/public/uploads');
 
         $message = FileService::deleteFilesByExtension($directory, $extension);

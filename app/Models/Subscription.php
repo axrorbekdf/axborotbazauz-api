@@ -26,7 +26,7 @@ class Subscription extends Model
         "name",
         "price",
         "period",
-        "responsible_worker",
+        // "responsible_worker",
     ];
 
     

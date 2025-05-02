@@ -20,8 +20,8 @@ class Category extends Model
 
     protected $searchable = [
         "name",
-        "count",
-        "responsible_worker",
+        // "count",
+        // "responsible_worker",
     ];
 
     public function materials(){

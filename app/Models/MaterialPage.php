@@ -20,11 +20,11 @@ class MaterialPage extends Model
     ];
 
     protected $searchable = [
-        "material.name",
-        "number",
+        // "material.name",
+        // "number",
         "content",
-        "previewPath",
-        "responsible_worker",
+        // "previewPath",
+        // "responsible_worker",
     ];
 
     public function material(){
