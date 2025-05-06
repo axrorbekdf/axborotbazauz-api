@@ -42,13 +42,6 @@ class HomeController extends Controller
 
     public function materials(Request $request){
 
-        // $model = Material::query()
-        //     ->with('category','subject', 'pages')
-        //     ->filter($request->all())
-        //     ->search($request->search)
-        //     ->paginate($request->perPage ?? 10);
-        // return successResponse(MaterialForHomeResource::collection($model)->response()->getData(true));
-
         return $this->materialClass->index();
 
     }
@@ -72,6 +65,10 @@ class HomeController extends Controller
         if (!$model) {
             return response()->json(['message' => 'Material not found'], 404);
         }
+
+        $model->update([
+            "downloads" => $model->downloads+1
+        ]);
         
         $pathExplode = explode("/", $model->path);
         $pathExplode[2] = $pathExplode[1]."-".$model->slug.".zip";
