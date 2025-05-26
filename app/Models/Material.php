@@ -27,12 +27,12 @@ class Material extends Model
         "title",
         // "slug",
         // "downloads",
-        "category.name",
-        "subject.name",
+        // "category.name",
+        // "subject.name",
         // "size",
         // "type",
         // "responsible_worker",
-        "pages.content"
+        // "pages.content"
     ];
 
     public function category(){

@@ -133,15 +133,15 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::put('/material/update/{id}', 'update');
                 Route::delete('/material/delete/{id}', 'destroy');
             });
+});
+
+
+Route::controller(MaterialController::class)
+    ->group(function () {
+        Route::get('/material/local/uploaded', 'readPdfAndReadWordPagesLocalUploads');
+        Route::get('/material/local/delete', 'deleteFiles');
+        Route::get('/material/page/images/delete', 'deleteFilesPageImages');
     });
-
-
-    Route::controller(MaterialController::class)
-        ->group(function () {
-            Route::get('/material/local/uploaded', 'readPdfAndReadWordPagesLocalUploads');
-            Route::get('/material/local/delete', 'deleteFiles');
-            Route::get('/material/page/images/delete', 'deleteFilesPageImages');
-        });
     
 
 
