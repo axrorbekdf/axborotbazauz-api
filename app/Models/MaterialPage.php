@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Filter\Trait\QueryFilter;
 use App\Traits\Searchable;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MaterialPage extends Model
 {
-    use HasFactory, Searchable, QueryFilter;
+    use HasFactory, Searchable, Filterable;
 
     protected $fillable = [
         "material_id",
