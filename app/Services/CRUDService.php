@@ -38,7 +38,7 @@ class CRUDService implements CRUDServiceInterface
 
         $cacheKey = 'model_query_' . md5(request()->fullUrl());
 
-        $model = Cache::remember($cacheKey, now()->addMinutes(10), function () {
+        $model = Cache::remember($cacheKey, now()->addMinutes(60), function () {
             $query = $this->modelClass::query()
                 ->with($this->withModels)
                 ->filter(request()->all());

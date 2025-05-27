@@ -33,7 +33,7 @@ class HomeController extends Controller
         $searchTerm = $request->search ?? '';
         $cacheKey = 'categories_with_material_count_' . md5($searchTerm);
 
-        $model = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($searchTerm) {
+        $model = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($searchTerm) {
             return Category::query()
                 ->search($searchTerm)
                 ->withCount(['materials as total_materials'])
@@ -51,7 +51,7 @@ class HomeController extends Controller
         $searchTerm = $request->search ?? '';
         $cacheKey = 'subjects_search_' . md5($searchTerm);
 
-        $model = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($searchTerm) {
+        $model = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($searchTerm) {
             return Subject::query()
                 ->search($searchTerm)
                 ->get();
@@ -76,7 +76,7 @@ class HomeController extends Controller
         $slug = $request->slug;
         $cacheKey = 'material_slug_' . $slug;
             
-            $model = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($slug) {
+            $model = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($slug) {
                 return Material::with('category', 'subject', 'pages')
                     ->where('slug', $slug)
                     ->first();
