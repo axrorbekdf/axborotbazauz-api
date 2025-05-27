@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
-use App\Helpers\FileS3;
-use App\Interfaces\CRUDServiceInterface;
 use Exception;
+use App\Helpers\FileS3;
+use Illuminate\Support\Facades\Cache;
+use App\Interfaces\CRUDServiceInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CRUDService implements CRUDServiceInterface
@@ -16,24 +17,46 @@ class CRUDService implements CRUDServiceInterface
     
     public function index(){
 
-        $model = $this->modelClass::query()
-            ->with($this->withModels)
-            ->filter(request()->all());
+        // $model = $this->modelClass::query()
+        //     ->with($this->withModels)
+        //     ->filter(request()->all());
 
-        if(request()->search && (request()->search !== "null" && request()->search !== "NULL")){
+        // if(request()->search && (request()->search !== "null" && request()->search !== "NULL")){
 
-            $model = $model->search(request()->search);
-        }
+        //     $model = $model->search(request()->search);
+        // }
 
-        if(request()->column && request()->direction){
-            $model = $model->orderBy(request()->column, request()->direction);
-        }
+        // if(request()->column && request()->direction){
+        //     $model = $model->orderBy(request()->column, request()->direction);
+        // }
 
-        if(request()->perPage){
-            $model = $model->paginate(request()->perPage);
-        }else{
-            $model = $model->get();
-        }
+        // if(request()->perPage){
+        //     $model = $model->paginate(request()->perPage);
+        // }else{
+        //     $model = $model->get();
+        // }
+
+        $cacheKey = 'model_query_' . md5(request()->fullUrl());
+
+        $model = Cache::remember($cacheKey, now()->addMinutes(10), function () {
+            $query = $this->modelClass::query()
+                ->with($this->withModels)
+                ->filter(request()->all());
+
+            if (request()->search && (request()->search !== "null" && request()->search !== "NULL")) {
+                $query = $query->search(request()->search);
+            }
+
+            if (request()->column && request()->direction) {
+                $query = $query->orderBy(request()->column, request()->direction);
+            }
+
+            if (request()->perPage) {
+                return $query->paginate(request()->perPage);
+            }
+
+            return $query->get();
+        });
     
         
         return successResponse($this->modelResourceClass::collection($model)

@@ -14,8 +14,8 @@ class SubjectFilter extends ModelFilter
     */
     public $relations = [];
 
-    public function category($category_id): void
+    public function category($category_id)
     {
-        $this->where('category_id', $category_id);
+        return $this->where('category_id', $category_id);
     }
 }

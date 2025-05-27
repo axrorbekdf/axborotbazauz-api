@@ -13,6 +13,7 @@ use App\Models\Subject;
 use App\Services\MaterialHomeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -24,18 +25,37 @@ class HomeController extends Controller
     }
 
     public function categories(Request $request){
-        $model = Category::query()
-            ->search($request->search)
-            ->withCount(['materials as total_materials'])
-            ->get();
+        // $model = Category::query()
+        //     ->search($request->search)
+        //     ->withCount(['materials as total_materials'])
+        //     ->get();
+
+        $searchTerm = $request->search ?? '';
+        $cacheKey = 'categories_with_material_count_' . md5($searchTerm);
+
+        $model = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($searchTerm) {
+            return Category::query()
+                ->search($searchTerm)
+                ->withCount(['materials as total_materials'])
+                ->get();
+        });
 
         return successResponse(CategoryForHomeResource::collection($model));
     }
 
     public function subjects(Request $request){
-        $model = Subject::query()
-            ->search($request->search)
-            ->get();
+        // $model = Subject::query()
+        //     ->search($request->search)
+        //     ->get();
+
+        $searchTerm = $request->search ?? '';
+        $cacheKey = 'subjects_search_' . md5($searchTerm);
+
+        $model = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($searchTerm) {
+            return Subject::query()
+                ->search($searchTerm)
+                ->get();
+        });
 
         return successResponse(SubjectForHomeResource::collection($model));
     }
@@ -48,10 +68,19 @@ class HomeController extends Controller
 
     public function materialShow(Request $request){
 
-        $model = Material::query()
-            ->with('category','subject', 'pages')
-            ->where('slug', $request->slug)
-            ->first();
+        // $model = Material::query()
+        //     ->with('category','subject', 'pages')
+        //     ->where('slug', $request->slug)
+        //     ->first();
+
+        $slug = $request->slug;
+        $cacheKey = 'material_slug_' . $slug;
+            
+            $model = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($slug) {
+                return Material::with('category', 'subject', 'pages')
+                    ->where('slug', $slug)
+                    ->first();
+            });
 
         return successResponse(MaterialShowForHomeResource::make($model));
     }
